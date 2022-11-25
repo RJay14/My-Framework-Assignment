@@ -1,5 +1,7 @@
 package testLayer;
 
+import java.util.concurrent.TimeUnit;
+
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -21,7 +23,7 @@ public class LoginTest extends BaseHRMClass {
 	public void initsetup() {
 		initiation();
 		Log = new POMLogin();
-		screenshots("Login");
+		//screenshots("Login");
 	}
 	
 	@Test (priority=1)
@@ -39,18 +41,21 @@ public class LoginTest extends BaseHRMClass {
 
 	
 	@Test (priority=2, dataProvider="Details")
-	public void Login(String name, String password) {
+	public void Login(String name, String password) throws InterruptedException {
 		/* Below used to fetch data from configuration file
 		Log.typeusername(prop.getProperty("username"));
 		Log.typepassword(prop.getProperty("password"));*/
-		
+		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		Log.typeusername(name);
 		Log.typepassword(password);
-		//Log.clickbutton();
+		Thread.sleep(3000);
+		Log.clickbutton();
 	}
 	
 	@AfterMethod
-	public void close() {
+	public void close() throws InterruptedException {
+		Thread.sleep(3000);
+		screenshots("Login");
 		driver.close();
 	}
 
